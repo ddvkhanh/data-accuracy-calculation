@@ -1,0 +1,43 @@
+<!-- served as default, will eventually show up at the root of website -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Log count</title>
+    <link rel="icon" href="/img/logs.png">
+    <link rel="stylesheet" href="/css/styles.css">
+
+<body>
+    <div class="main-content">
+        {{>header}}
+        <p class="instruction">Use this site to calculate number of logs and diameter of each log.</p>
+
+        <form method="POST" action="/upload-log-image" enctype="multipart/form-data">
+            <div>
+                <p>Step 1: Upload image of log stack with attached barcodes.</p>
+                <input type="file" name="log-image" />
+            </div>
+            <div>
+                <input type="submit" name="btn_upload_log_pic" value="Upload" />
+            </div>
+        </form>
+
+        <form method="POST" action="/upload-log-count-csv-file" enctype="multipart/form-data">
+            <div>
+                <p>Step 2: Upload csv file of number of logs and short-end diameters.</p>
+                <input type="file" name="log-count-csv-file" />
+            </div>
+            <div>
+                <input type="submit" name="btn_upload_csv_file" value="Upload" />
+            </div>
+            <button class="compute">Compute</button>
+        </form>
+        <p id="message-1">Computer result: </p>
+        <p id="message-2">Accuracy:</p>
+    </div>
+    {{>footer}}
+</body>
+
+</head>
+
+</html>

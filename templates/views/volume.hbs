@@ -1,0 +1,34 @@
+<!-- served as default, will eventually show up at the root of website -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Volume calculation</title>
+    <link rel="icon" href="/img/logs.png">
+    <link rel="stylesheet" href="/css/styles.css">
+
+<body>
+    <div class="main-content">
+        {{>header}}
+        <p class="instruction">Use this site to calculate volume of log stack by JAS formula.</p>
+        <form>
+            <p>Upload image of log stack with attached barcodes.</p>
+            <button>Upload</button>
+
+            <p>Upload csv file of actual calculation.</p>
+            <button>Upload</button>
+
+            <label id="log-length">Enter log length: </label>
+            <p><input id="log-length" placeholder="E.g: 5.5"> m</p>
+
+            <button class="compute">Compute</button>
+        </form>
+        <p id="message-1"></p>
+        <p id="message-2"></p>
+    </div>
+    {{>footer}}
+</body>
+
+</head>
+
+</html>
