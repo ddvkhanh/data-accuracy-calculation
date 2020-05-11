@@ -22,21 +22,27 @@
             </div>
         </form>
 
-        <form method="POST" action="/upload-log-count-csv-file" enctype="multipart/form-data">
+        <form id="fileform-csv">
             <div>
                 <p>Step 2: Upload csv file of number of logs and short-end diameters.</p>
-                <input type="file" name="log-count-csv-file" />
+                <input id="csv-input" type="file" name="log-count-csv-file" />
             </div>
             <div>
                 <input type="submit" name="btn_upload_csv_file" value="Upload" />
             </div>
-            <button class="compute">Compute</button>
         </form>
+
+        
+        <button class="compute" id="logcount-compute">Compute</button>
+        
         <p id="message-1">Computer result: </p>
         <p id="message-2">Accuracy:</p>
     </div>
     {{>footer}}
-</body>
+
+
+    <script src="/js/client.js"></script>
+    </body>
 
 </head>
 

@@ -1,8 +1,10 @@
 const express = require("express");
 const path = require("path");
 const hbs = require("hbs");
-const multer = require("multer");
-const helpers = require("./helpers");
+const fs = require("fs");
+const neatCsv = require("neat-csv");
+const upload = require("./utils/upload");
+const helpers = require("./utils/helpers");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -12,7 +14,7 @@ const publicDirectory = path.join(__dirname, "../public");
 const viewsPath = path.join(__dirname, "../templates/views");
 const partialsPath = path.join(__dirname, "../templates/partials");
 const imagePath = path.join(__dirname, "../images");
-const logcountCSVPath=path.join(__dirname,"../logcountCSV");
+const logcountCSVPath = path.join(__dirname, "../logcountCSV");
 
 //Setup handlebars engine and views location
 app.set("view engine", "hbs");
@@ -23,8 +25,6 @@ hbs.registerPartials(partialsPath);
 app.use(express.static(publicDirectory));
 app.use("/images", express.static(imagePath));
 app.use("/logcountCSV", express.static(logcountCSVPath));
-
-
 
 app.get("", (req, res) => {
   res.render("index", {
@@ -56,72 +56,72 @@ app.get("*", (req, res) => {
 });
 
 //upload image
-const uploadImage = multer({
-  dest: "images",
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG)$/)) {
-      return cb(new Error("Please upload an imaget"));
+const uploadImage = upload.uploadImage();
+
+app.post("/upload-log-image", (req, res, next) => {
+  uploadImage.single("log-image")(req, res, function (err) {
+    if (req.fileValidationError) {
+      return res.send(req.fileValidationError);
+    } else if (!req.file) {
+      return res.send("Please select an image to upload");
+    } else if (err) {
+      return res.send(err);
     }
-    cb(undefined, true);
-  },
+
+    // Display uploaded image for user validation
+    res.send(
+      `You have uploaded this image: <hr/><img src="${req.file.path}" width="500"><hr />Go back to continue`
+    );
+  });
 });
-
-app.post(
-  "/upload-log-image",
-  (req,res, next)  => {
-    uploadImage.single("log-image")(req,res,function(err){
-      if (req.fileValidationError) {
-        return res.send(req.fileValidationError);
-      } else if (!req.file) {  
-        return res.send("Please select an image to upload");
-      } else if (err instanceof multer.MulterError) {
-        return res.send(err);
-      } else if (err) {
-        return res.send(err);
-      }
-  
-      // Display uploaded image for user validation
-      res.send(
-        // `You have uploaded this image: <hr/><img src="${req.file.path}" width="500"><hr /><a href="./logcount">Upload another image</a>`
-      );
-    })
-  }
-);
-
 
 //upload csv file
-const uploadCSV = multer({
-  dest: "logcountCSV",
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(csv)$/)) {
-      return cb(new Error("Please upload a csv file"));
-    }
-    cb(undefined, true);
-  },
+const uploadCSV = upload.uploadCSV();
+
+app.post("/upload-log-count-csv-file", async (req, res, next) => {
+  console.log("request", req.files);
+  uploadCSV.single("log-count-csv-file")(req, res, function (err) {
+    const filePath = req.file.path;
+    fs.readFile(filePath, (error, data) => {
+      if (error) {
+        return console.log("error reading file");
+      }
+      neatCsv(data).then((parsedData) => {
+        const dataJSON = JSON.stringify(parsedData, null, 2); //write a response to the client
+        fs.writeFileSync("logs.json", dataJSON);
+        res.send(req.file);
+      });
+    });
+  });
 });
 
 app.post(
-  "/upload-log-count-csv-file",
-  (req,res, next)  => {
-    uploadCSV.single("log-count-csv-file")(req,res,function(err){
-      if (req.fileValidationError) {
-        return res.send(req.fileValidationError);
-      } else if (!req.file) {  
-        return res.send("Please select a csv file to upload");
-      } else if (err instanceof multer.MulterError) {
-        return res.send(err);
-      } else if (err) {
-        return res.send(err);
+  "/upload-log-count-csv-file2",
+  uploadCSV.single("log-count-csv-file"),
+  async (req, res, next) => {
+    console.log("request", req.file);
+
+    const filePath = req.file.path;
+    fs.readFile(filePath, (error, data) => {
+      if (error) {
+        return console.log("error reading file");
       }
-  
-      res.send(req.file
-        // `You have uploaded this file: ${req.originalname}><hr /><a href="./logcount">Upload another file</a>`
-      );
-    })
+      neatCsv(data).then((parsedData) => {
+        const dataJSON = JSON.stringify(parsedData, null, 2); //write a response to the client
+        fs.writeFileSync("logs.json", dataJSON);
+        res.send(req.file);
+      });
+    });
   }
 );
 
+//extract file JSON
+const logcount = helpers.extractCSV("logs.json");
+logcount.forEach((log) => console.log(log.BarCode));
 
+//extract computer generated CSV file
+
+const computerCount = helpers.calculateLogCount();
 
 app.listen(port, () => {
   console.log("Server is up on port " + port);
