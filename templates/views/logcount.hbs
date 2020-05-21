@@ -6,7 +6,7 @@
     <title>Log count</title>
     <link rel="icon" href="/img/logs.png">
     <link rel="stylesheet" href="/css/styles.css">
-    <script src="/js/upload-csv.js" ></script>
+    <script src="/js/upload-csv.js"></script>
 
 
 <body>
@@ -14,44 +14,49 @@
         {{>header}}
         <p class="instruction">Use this site to calculate number of logs and diameter of each log.</p>
 
-        <form method="POST" action="/upload-log-image" enctype="multipart/form-data">
-            <div>
-                <p>Step 1: Upload image of log stack with attached barcodes.</p>
-                <input type="file" name="log-image" />
-            </div>
-            <div>
-                <input type="submit" name="btn_upload_log_pic" value="Upload" />
-            </div>
-        </form>
 
-        <form id="fileform-csv">
+        <form id="fileform">
             <div>
-                <p>Step 2: Upload csv file of number of logs and short-end diameters.</p>
+                <p>Step 1: Select image of log stack with attached barcodes.</p>
+                <input id="img-input" type="file" name="log-image" />
+            </div>
+            <p class="error hidden" id="img-input-error">Please select an image</p>
+            <p class="error hidden" id="img-server-error"></p>
+            <div>
+                <p>Step 2: Select csv file of number of logs and short-end diameters.</p>
                 <input id="csv-input" type="file" name="log-count-csv-file" />
             </div>
-            <div>
-                <input type="submit" name="btn_upload_csv_file" value="Upload" />
-                <p id="csv-upload"></p>
-            </div>
+            <p class="error hidden" id="csv-input-error">Please select a csv file</p>
+            <button type="submit" class="compute" id="logcount-compute">Compute</button>
+
         </form>
 
-        
-        <button class="compute" id="logcount-compute">Compute</button>
+
         <span>
-        <p id="message-1">Computer result: </p>
-        <p id= "loading"></p>
-        <p id= "compare-result"></p>
+            <p>Computer result: </p>
+            <p id="compare-result"></p>
         </span>
         <div id="id01"></div>
+        <p>Matched barcodes:</p>
+        <div id="match-table"></div>
+        <p>Unmatch barcodes:</p>
 
-        <div id="result-table"></div>
-        <p id="message-2">Accuracy:</p>
-    </div>
-    {{>footer}}
+        <div id="unmatch-table"></div>
+        <div id="accuracy-container">
+            <p>Accuracy: </p>
+            <p id="accuracy"></p>
+        </div>
+        <div id="standard-error-container">
+            <p>Mean Standard Error:</p>
+            <p id="standard-error"></p>
 
+        </div>
 
-    <script src="/js/client.js"></script>
-    </body>
+        {{>footer}}
+
+        <script src="/js/helpers.js"></script>
+        <script src="/js/client.js"></script>
+</body>
 
 </head>
 

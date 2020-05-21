@@ -47,6 +47,10 @@ app.get("/volume", (req, res) => {
   });
 });
 
+app.get("/reference-records", (req, res) => {
+  res.json(helpers.staticRecords);
+});
+
 app.get("*", (req, res) => {
   res.render("404", {
     title: "404",
@@ -58,51 +62,31 @@ app.get("*", (req, res) => {
 //upload image
 const uploadImage = upload.uploadImage();
 
-app.post("/upload-log-image", (req, res, next) => {
-  uploadImage.single("log-image")(req, res, function (err) {
-    if (req.fileValidationError) {
-      return res.send(req.fileValidationError);
-    } else if (!req.file) {
-      return res.send("Please select an image to upload");
-    } else if (err) {
-      return res.send(err);
-    }
-
-    // Display uploaded image for user validation
-    res.send(
-      `You have uploaded this image: <hr/><img src="${req.file.path}" width="500"><hr />Go back to continue`
-    );
-  });
-});
+app.post(
+  "/upload-log-image",
+  uploadImage.single("log-image"),
+   (req, res) => {
+    const filePath = req.file.path;
+    fs.readFile(filePath, (error, data) => {
+      if (error) {
+        return console.log("error reading file");
+      }
+    });
+    console.log("here")
+    res.send(helpers.barcodeAndSEDMAp);
+  },
+  (error, req, res, next) => {
+    res.status(400).send({ error: error.message });
+  }
+);
 
 //upload csv file
 const uploadCSV = upload.uploadCSV();
 
-// app.post("/upload-log-count-csv-file", async (req, res, next) => {
-//   console.log("request", req.files);
-//   uploadCSV.single("log-count-csv-file")(req, res, function (err) {
-//     const filePath = req.file.path;
-//     fs.readFile(filePath, (error, data) => {
-//       if (error) {
-//         return console.log("error reading file");
-//       }
-//       neatCsv(data).then((parsedData) => {
-//         const dataJSON = JSON.stringify(parsedData, null, 2); //write a response to the client
-//         fs.writeFileSync("logs.json", dataJSON);
-//         res.send(req.file);
-//       });
-//     });
-//   });
-// });
-
 app.post(
   "/upload-log-count-csv-file2",
   uploadCSV.single("log-count-csv-file"),
-  async (req, res, next) => {
-    console.log("app upload");
-    console.log("static ", helpers.staticRecords);
-    //console.log("request", req.file);
-
+  async (req, res) => {
     const filePath = req.file.path;
     fs.readFile(filePath, (error, data) => {
       if (error) {
@@ -111,43 +95,14 @@ app.post(
       neatCsv(data).then((parsedData) => {
         const dataJSON = JSON.stringify(parsedData, null, 2); //write a response to the client
         fs.writeFileSync("logs.json", dataJSON);
-        console.log("user input", dataJSON);
-    
-
-        const matches = [];
-        const unmatches = [];
-        let matchCount = 0;
-        parsedData.forEach((measurement) => {
-          const { BarCode, ShortendDiameter } = measurement;
-          if (helpers.barcodeAdSEDMap[BarCode] && helpers.barcodeAdSEDMap[BarCode] == ShortendDiameter ){
-            //console.log("found matche", BarCode)
-            matches.push(measurement);
-            matchCount++;
-          }else {
-            unmatches.push(measurement);
-          }
-  
-        });
-      
-        console.log("matches",matches);
-        console.log("unmatches",unmatches);
-        console.log("match count", matchCount)
-        console.log("percent :" , matchCount/parsedData.length * 100+ "%")
-        res.send(dataJSON);
       });
     });
+    res.send();
+  },
+  (error, req, res, next) => {
+    res.status(400).send({ error: error.message });
   }
 );
-
-//extract file JSON
-const logcount = helpers.extractJSON("logs.json");
-
-// logcount.forEach((log) => console.log(log.BarCode));
-
-//extract computer generated CSV file
-
-const computerCount = helpers.calculateLogCount();
-helpers.compareLogCount();
 
 app.listen(port, () => {
   console.log("Server is up on port " + port);
