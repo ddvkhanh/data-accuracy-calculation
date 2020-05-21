@@ -6,6 +6,8 @@
     <title>Log count</title>
     <link rel="icon" href="/img/logs.png">
     <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/upload-csv.js" ></script>
+
 
 <body>
     <div class="main-content">
@@ -29,13 +31,20 @@
             </div>
             <div>
                 <input type="submit" name="btn_upload_csv_file" value="Upload" />
+                <p id="csv-upload"></p>
             </div>
         </form>
 
         
         <button class="compute" id="logcount-compute">Compute</button>
-        
+        <span>
         <p id="message-1">Computer result: </p>
+        <p id= "loading"></p>
+        <p id= "compare-result"></p>
+        </span>
+        <div id="id01"></div>
+
+        <div id="result-table"></div>
         <p id="message-2">Accuracy:</p>
     </div>
     {{>footer}}

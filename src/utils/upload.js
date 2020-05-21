@@ -4,7 +4,7 @@ const multer = require("multer");
 //upload image file
 uploadImage = () =>
   multer({
-    dest: "images",
+    dest: "images/user-input-img",
     fileFilter(req, file, cb) {
       if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG)$/)) {
         return cb(new Error("Please upload an image"));

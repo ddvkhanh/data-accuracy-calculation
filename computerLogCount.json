@@ -1,34 +1,42 @@
 [
   {
-    "BarCode": "AAB112",
-    "ShortendDiameter": 8
+    "BarCode": "021860",
+    "ShortendDiameter": 48
   },
   {
-    "BarCode": "AAB113",
-    "ShortendDiameter": 8
+    "BarCode": "021858",
+    "ShortendDiameter": 56
   },
   {
-    "BarCode": "AAB114",
-    "ShortendDiameter": 8
+    "BarCode": "021856",
+    "ShortendDiameter": 48
   },
   {
-    "BarCode": "AAB115",
-    "ShortendDiameter": 8
+    "BarCode": "022934",
+    "ShortendDiameter": 66
   },
   {
-    "BarCode": "AAB116",
-    "ShortendDiameter": 8
+    "BarCode": "022932",
+    "ShortendDiameter": 58
   },
   {
-    "BarCode": "AAB117",
-    "ShortendDiameter": 8
+    "BarCode": "022930",
+    "ShortendDiameter": 42
   },
   {
-    "BarCode": "AAB118",
-    "ShortendDiameter": 8
+    "BarCode": "022928",
+    "ShortendDiameter": 28
   },
   {
-    "BarCode": "AAB119",
-    "ShortendDiameter": 8
+    "BarCode": "91495",
+    "ShortendDiameter": 34
+  },
+  {
+    "BarCode": "91496",
+    "ShortendDiameter": 34
+  },
+  {
+    "BarCode": "91498",
+    "ShortendDiameter": 40
   }
 ]

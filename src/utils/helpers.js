@@ -1,7 +1,10 @@
 const fs = require("fs");
+const isEqual = require('lodash.isequal');
+const userURL="public/logs.json"
+const compURL="public/computerLogCount.json"
 
 //Read CSV
-extractCSV = function (file) {
+extractJSON = function (file) {
   try {
     const dataBuffer = fs.readFileSync(file);
     const dataJSON = dataBuffer.toString();
@@ -10,28 +13,45 @@ extractCSV = function (file) {
     return [];
   }
 };
+const staticRecords = [
+  { BarCode: "021860", ShortendDiameter: 48 },
+  { BarCode: "021858", ShortendDiameter: 56 },
+  { BarCode: "021856", ShortendDiameter: 48 },
+  { BarCode: "022934", ShortendDiameter: 66 },
+  { BarCode: "022932", ShortendDiameter: 58 },
+  { BarCode: "022930", ShortendDiameter: 42 },
+  { BarCode: "022928", ShortendDiameter: 28 },
+  { BarCode: "91495", ShortendDiameter: 34 },
+  { BarCode: "91496", ShortendDiameter: 34 },
+  { BarCode: "91498", ShortendDiameter: 40 },
+];
+const barcodeAdSEDMap = {};
+staticRecords.forEach((element) => {
+  barcodeAdSEDMap[element.BarCode] = element.ShortendDiameter;
+});
 
 //Create computer-generated CSV file
 // this is hard-coded for now
 calculateLogCount = () => {
-  let records = [
-    { BarCode: "AAB112", ShortendDiameter: 8 },
-    { BarCode: "AAB113", ShortendDiameter: 8 },
-    { BarCode: "AAB114", ShortendDiameter: 8 },
-    { BarCode: "AAB115", ShortendDiameter: 8 },
-    { BarCode: "AAB116", ShortendDiameter: 8 },
-    { BarCode: "AAB117", ShortendDiameter: 8 },
-    { BarCode: "AAB118", ShortendDiameter: 8 },
-    { BarCode: "AAB119", ShortendDiameter: 8 },
 
-  ];
 
-  let logData = JSON.stringify(records, null, 2);
+  let logData = JSON.stringify(staticRecords, null, 2);
   fs.writeFileSync("computerLogCount.json", logData);
-  console.log(logData);
+
 };
 
+//Compare datasets of human and computer generated
+compareLogCount= ()=>{
+  console.log("in");
+  console.log(isEqual(userURL, compURL));
+};
+
+console.log("ref",barcodeAdSEDMap )
+
 module.exports = {
-  extractCSV,
-  calculateLogCount
+    extractJSON,
+    calculateLogCount,
+    compareLogCount,
+    staticRecords,
+    barcodeAdSEDMap
 };
