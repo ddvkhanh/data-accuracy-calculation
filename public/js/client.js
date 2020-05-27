@@ -34,10 +34,10 @@ async function uploadImage() {
     const file = imgInput.files[0];
     console.log("file", file);
     const url = "/upload-log-image";
-  
+
     const formData = new FormData();
     formData.append("log-image", file);
-  
+
     const response = await fetch(
       url,
       {
@@ -52,7 +52,6 @@ async function uploadImage() {
   } catch (error) {
     console.log("run into error");
   }
-
 }
 
 function computeStatsFromRefAndParsedData(refDataAsDictionary, parsedData) {
@@ -67,9 +66,13 @@ function computeStatsFromRefAndParsedData(refDataAsDictionary, parsedData) {
   Object.keys(parsedData).forEach((key) => {
     const BarCode = key;
     const ShortendDiameter = parsedData[key];
-    const measurement = { ShortendDiameter, BarCode };
+    const measurement = {  BarCode, ShortendDiameter };
     if (refDataAsDictionary[BarCode]) {
-      matches.push(measurement);
+      const matchedMeasurement = {
+        ...measurement,
+        ReferenceShortendDiameter: refDataAsDictionary[BarCode],
+      };
+      matches.push(matchedMeasurement);
       matchCount++;
       //calculate standard deviation
       const diff = refDataAsDictionary[BarCode] - ShortendDiameter;
@@ -105,7 +108,7 @@ async function onFormSubmit(e) {
 
     // assume ref data is available here after upload Image success
     console.log("Ref data form server", refData);
-    if (refData.error){
+    if (refData.error) {
       img_server_error.classList.remove("hidden");
       img_server_error.innerHTML = refData.error;
       return;

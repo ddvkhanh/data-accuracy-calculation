@@ -72,10 +72,26 @@ app.post(
         return console.log("error reading file");
       }
     });
-    console.log("here")
     res.send(helpers.barcodeAndSEDMAp);
   },
   (error, req, res, next) => {
+    res.status(400).send({ error: error.message });
+  }
+);
+
+app.post(
+  "/upload-vol-log-image",
+  uploadImage.single("log-vol-image"),
+   (req, res) => {
+    const filePath = req.file.path;
+    console.log(filePath);
+    fs.readFile(filePath, (error, data) => {
+      if (error) {
+        return console.log("error reading file");
+      }
+    });
+  }, (error, req, res, next) => {
+    console.log("file loading...")
     res.status(400).send({ error: error.message });
   }
 );

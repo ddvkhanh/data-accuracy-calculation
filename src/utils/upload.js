@@ -7,7 +7,7 @@ uploadImage = () =>
     dest: "images/user-input-img",
     fileFilter(req, file, cb) {
       if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG)$/)) {
-        return cb(new Error("Please upload an image you dumb fuckery"));
+        return cb(new Error("Please upload an image "));
       }
       cb(undefined, true);
     },

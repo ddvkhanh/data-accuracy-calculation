@@ -11,15 +11,24 @@
     <div class="main-content">
         {{>header}}
         <p class="instruction">Use this site to calculate volume of log stack by JAS formula.</p>
-        <form>
-            <p>Upload image of log stack with attached barcodes.</p>
-            <button>Upload</button>
+        <form id="fileform-vol">
+            <div>
+                <p>Step 1: Select image of log stack with attached barcodes.</p>
+                <input id="img-vol-input" type="file" name="log-vol-image" />
+                <p class="error hidden" id="img-vol-input-error">Please select an image</p>
+                <p class="error hidden" id="img-vol-server-error"></p>
+            </div>
+            
 
-            <p>Upload csv file of actual calculation.</p>
-            <button>Upload</button>
+            <div class"text-input-container">
+                <label for="log-length">Step 2: Enter log length: </label>
+                <p><input type="number" id="log-length" placeholder="E.g: 5.5" required> m</p>
+            </div>
 
-            <label id="log-length">Enter log length: </label>
-            <p><input id="log-length" placeholder="E.g: 5.5"> m</p>
+            <div class"text-input-container">
+                <label for="jas-actual">Step 3: Enter JAS actual result: </label>
+                <p><input type="number" id="jas-actual" placeholder="" required> m3</p>
+            </div>
 
             <button class="compute">Compute</button>
         </form>
@@ -27,6 +36,8 @@
         <p id="message-2"></p>
     </div>
     {{>footer}}
+    <script src="/js/volume.js"></script>
+
 </body>
 
 </head>

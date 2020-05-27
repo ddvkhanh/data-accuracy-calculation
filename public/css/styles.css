@@ -1,5 +1,5 @@
 .attribute{
-    font-size: 0.5em;
+    font-size: 0.75em;
 }
 
 
@@ -63,11 +63,21 @@ button {
 }
 
 .instruction {
-    font-size: 1.5em;
+    font-size: 1.25em;
 }
 .error {
     color: red;
 }
 .hidden {
     display: none;
+}
+.jas-formula {
+    color: teal;
+    text-align: center;
+}
+.formula-container {
+    border: 1px solid #00b3b3
+	;
+    margin: 10px;
+    padding: 10px;
 }
