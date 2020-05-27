@@ -2,34 +2,33 @@
     font-size: 0.75em;
 }
 
-
 body {
     color: #333333;
     display: flex;
     font-family: arial;
     flex-direction: column;
     min-height: 100vh; /*vh: viewport height*/
-    max-width: 650px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 0 0px;
 }
 
 .main-content {
     flex-grow: 1; /*allow to take whatever it needs*/
+    padding: 0 20px;
 }
 
-footer{
+footer {
     color: #888888;
     border-top: 1px solid #444444;
     margin-top: 16px;
     padding: 16px 0;
+    text-align: center;
 }
 
-header {
-    margin-top: 16px;
-    margin-bottom: 48px;
+header h1 {
+    padding: 10px;
+    margin: 20px 10px
 }
-
 h1 {
     font-size:  64px;
     margin-bottom: 16px;
@@ -69,7 +68,7 @@ button {
     color: red;
 }
 .hidden {
-    display: none;
+    display: none !important;
 }
 .jas-formula {
     color: teal;
@@ -80,4 +79,7 @@ button {
 	;
     margin: 10px;
     padding: 10px;
+}
+nav .nav-wrapper {
+    padding: 0 10px;
 }

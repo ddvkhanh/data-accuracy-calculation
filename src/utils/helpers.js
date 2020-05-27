@@ -5,8 +5,8 @@ const compURL="public/computerLogCount.json"
 
 
 const staticRecords = [
-  { BarCode: "021860", ShortendDiameter: 48 },
-  { BarCode: "021858", ShortendDiameter: 56 },
+  { BarCode: "021860", ShortendDiameter: 60 },
+  { BarCode: "021858", ShortendDiameter: 60 },
   { BarCode: "021856", ShortendDiameter: 48 },
   { BarCode: "022934", ShortendDiameter: 66 },
   { BarCode: "022932", ShortendDiameter: 58 },

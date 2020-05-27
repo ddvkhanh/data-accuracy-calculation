@@ -66,7 +66,7 @@ function computeStatsFromRefAndParsedData(refDataAsDictionary, parsedData) {
   Object.keys(parsedData).forEach((key) => {
     const BarCode = key;
     const ShortendDiameter = parsedData[key];
-    const measurement = {  BarCode, ShortendDiameter };
+    const measurement = { BarCode, ShortendDiameter };
     if (refDataAsDictionary[BarCode]) {
       const matchedMeasurement = {
         ...measurement,
@@ -132,7 +132,9 @@ async function onFormSubmit(e) {
     document.getElementById("standard-error").innerHTML = standardError;
   };
   img_server_error.classList.add("hidden");
-  const refData = await uploadImage();
+  const response = await uploadImage();
+  const refData = response.data;
+  document.getElementById("server-image").src = response.processedImageUrl
 
   csvFileReader.readAsText(csvFile);
 }
@@ -160,59 +162,6 @@ computeButton.addEventListener("click", async function (e) {
 //@function:         Generate dynamic table
 //@input:            array of json object
 //@output:           table on web
-function generateDynamicTable(logData, location) {
-  var noOfLogs = logData.length;
-  console.log(noOfLogs);
-  if (noOfLogs > 0) {
-    //Create dynamic table
-    var table = document.createElement("table");
-    table.style.width = "50%";
-    table.setAttribute("border", "1");
-    table.setAttribute("cellspacing", "0");
-    table.setAttribute("cellpadding", "5");
-
-    //retrieve col header
-    var col = [];
-    for (var i = 0; i < noOfLogs; i++) {
-      for (var key in logData[i]) {
-        if (col.indexOf(key) === -1) {
-          col.push(key);
-        }
-      }
-    }
-    console.log(col);
-
-    //create table head
-    var tHead = document.createElement("thead");
-
-    //create row for table head
-    var hRow = document.createElement("tr");
-
-    //add column header to row of table head
-    for (var i = 0; i < col.length; i++) {
-      var th = document.createElement("th");
-      th.innerHTML = col[i];
-      hRow.appendChild(th);
-    }
-    tHead.appendChild(hRow);
-    table.appendChild(tHead);
-    //create table bodu
-    var tBody = document.createElement("tbody");
-
-    //add column header to row of table head
-    for (var i = 0; i < noOfLogs; i++) {
-      var bRow = document.createElement("tr");
-      for (var j = 0; j < col.length; j++) {
-        var td = document.createElement("td");
-        td.innerHTML = logData[i][col[j]];
-        bRow.appendChild(td);
-      }
-      tBody.appendChild(bRow);
-    }
-    table.appendChild(tBody);
-    // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
-    var divContainer = document.getElementById(location);
-    divContainer.innerHTML = "";
-    divContainer.appendChild(table);
-  }
-}
+var src = document.getElementById("img-input");
+var target = document.getElementById("original-image");
+showImage(src, target);

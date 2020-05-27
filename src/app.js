@@ -25,6 +25,12 @@ hbs.registerPartials(partialsPath);
 app.use(express.static(publicDirectory));
 app.use("/images", express.static(imagePath));
 app.use("/logcountCSV", express.static(logcountCSVPath));
+hbs.registerHelper("convert", function (data) {
+  if (!data) {
+    return;
+  }
+  return JSON.stringify(data);
+});
 
 app.get("", (req, res) => {
   res.render("index", {
@@ -42,8 +48,9 @@ app.get("/logcount", (req, res) => {
 
 app.get("/volume", (req, res) => {
   res.render("volume", {
-    title: "Volume calculation",
+    title: "Volume calculator",
     name: "Digital Innovation Lab",
+    referenceData: helpers.staticRecords,
   });
 });
 
@@ -65,14 +72,19 @@ const uploadImage = upload.uploadImage();
 app.post(
   "/upload-log-image",
   uploadImage.single("log-image"),
-   (req, res) => {
+  (req, res) => {
     const filePath = req.file.path;
     fs.readFile(filePath, (error, data) => {
       if (error) {
         return console.log("error reading file");
       }
     });
-    res.send(helpers.barcodeAndSEDMAp);
+    // TODO: replace this with actual result from python
+    const processedImageUrl = `/images/comp-generated-img/processed-img.png`
+    res.send({
+      data: helpers.barcodeAndSEDMAp,
+      processedImageUrl
+    });
   },
   (error, req, res, next) => {
     res.status(400).send({ error: error.message });
@@ -82,7 +94,7 @@ app.post(
 app.post(
   "/upload-vol-log-image",
   uploadImage.single("log-vol-image"),
-   (req, res) => {
+  (req, res) => {
     const filePath = req.file.path;
     console.log(filePath);
     fs.readFile(filePath, (error, data) => {
@@ -90,8 +102,11 @@ app.post(
         return console.log("error reading file");
       }
     });
-  }, (error, req, res, next) => {
-    console.log("file loading...")
+    // TODO: replace this with actual result from python
+    res.send(helpers.staticRecords);
+  },
+  (error, req, res, next) => {
+    console.log("file loading...");
     res.status(400).send({ error: error.message });
   }
 );

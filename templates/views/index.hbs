@@ -1,72 +1,68 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Home page</title>
-    <link rel="icon" href="/img/logs.png">
-    <link rel="stylesheet" href="/css/styles.css">
-    <script src="/js/app.js"></script>
+{{>head}}
 
 <body>
+    {{>header}}
     <div class="main-content">
-        {{>header}}
+
         <p>This site was created by the Digital Innovation Lab.
             The main purpose is to calculate the accuracy rate of our automated JAS calculation tool by comparing human
             computed and the actual results.</p>
-    </div>
-    <div class="formula-container">
-        <p class="instruction">For logs less than 6m long: </p>
-        <p class="jas-formula"> V(m3) = (D²*L)/10000 </p>
-        <p>
-            where:
-            <br />
-            D – small-end diameter(cm), for less than 14 cm, the diameter is rounded down and after 14cm the diameter is
-            rounded down to the nearest even integer.
-            <br />
-            L – Length(m)
-        </p>
+        <div class="formula-container">
+            <p class="instruction">For logs less than 6m long: </p>
+            <p class="jas-formula"> V(m3) = (D²*L)/10000 </p>
+            <p>
+                where:
+                <br />
+                D – small-end diameter(cm), for less than 14 cm, the diameter is rounded down and after 14cm the
+                diameter is
+                rounded down to the nearest even integer.
+                <br />
+                L – Length(m)
+            </p>
+        </div>
+
+        <div class="formula-container">
+            <p class="instruction">For logs equal to or greater than 6m: </p>
+            <p class="jas-formula">V(m3) = (D + [L’-4]/2)^2*(L/10000)</p>
+            <p> where:
+                <br />
+                D – small-end diameter(cm), for less than 14 cm, the diameter is rounded down and after 14cm the
+                diameter is
+                rounded down to the nearest even integer.
+                <br />
+                L – Length(m)
+                <br />
+                L’ – length in meters rounded down to nearest whole number
+            </p>
+        </div>
+
+        <div class="additiona-note">
+            <p>* Notes: </p>
+            <p>
+                For logs, less than 14 cm (nominally) on the small-end measurement needs to be taken through the narrow
+                axis.
+            </p>
+            <p>
+                For logs with 14 cm and larger, two measurements need to be taken, through the narrow axis and the wide
+                axis
+                of the log end.
+            </p>
+
+            <p>
+                JAS rounds each log volume to 3 decimal places. There are two rounding options according to the final
+                diameter result:
+                <ul>
+                    <li>Logs with less than 14 cm of diameter – the result will be rounded down.
+                    </li>
+                    <li>Logs with more than 14 cm of diameter – the result will be rounded down to the nearest even
+                        integer.
+                    </li>
+
+                </ul>
+            </p>
+        </div>
     </div>
 
-    <div class="formula-container">
-        <p class="instruction">For logs equal to or greater than 6m: </p>
-        <p class="jas-formula">V(m3) = (D + [L’-4]/2)^2*(L/10000)</p>
-        <p> where:
-            <br />
-            D – small-end diameter(cm), for less than 14 cm, the diameter is rounded down and after 14cm the diameter is
-            rounded down to the nearest even integer.
-            <br />
-            L – Length(m)
-            <br />
-            L’ – length in meters rounded down to nearest whole number
-        </p>
-    </div>
-
-    <div class="additiona-note">
-        <p>* Notes: </p>
-        <p>
-            For logs, less than 14 cm (nominally) on the small-end measurement needs to be taken through the narrow
-            axis.
-        </p>
-        <p>
-            For logs with 14 cm and larger, two measurements need to be taken, through the narrow axis and the wide axis
-            of the log end.
-        </p>
-
-        <p>
-            JAS rounds each log volume to 3 decimal places. There are two rounding options according to the final
-            diameter result:
-            <ul>
-                <li>Logs with less than 14 cm of diameter – the result will be rounded down.
-                </li>
-                <li>Logs with more than 14 cm of diameter – the result will be rounded down to the nearest even integer.
-                </li>
-
-            </ul>
-        </p>
-    </div>
     {{>footer}}
 
 </body>
-</head>
-
-</html>

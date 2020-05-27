@@ -1,65 +1,72 @@
 <!-- served as default, will eventually show up at the root of website -->
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Log count</title>
-    <link rel="icon" href="/img/logs.png">
-    <link rel="stylesheet" href="/css/styles.css">
-    <script src="/js/upload-csv.js"></script>
-
+{{>head}}
 
 <body>
+    {{>header}}
     <div class="main-content">
-        {{>header}}
-        <p class="instruction">Use this site to calculate number of logs and diameter of each log.</p>
+        <div class="row">
+            <div class="col s6">
+                <p class="instruction">Use this site to calculate number of logs and diameter of each log.</p>
+                <form id="fileform">
+                    <div>
+                        <p>Step 1: Select image of log stack with attached barcodes.</p>
+                        <input id="img-input" type="file" name="log-image" />
+                    </div>
+                    <p class="error hidden" id="img-input-error">Please select an image</p>
+                    <p class="error hidden" id="img-server-error"></p>
 
+                    <div>
+                        <p>Step 2: Select csv file of number of logs and short-end diameters.</p>
+                        <input id="csv-input" type="file" name="log-count-csv-file" />
+                    </div>
+                    <p class="error hidden" id="csv-input-error">Please select a csv file</p>
+                    <br>
+                    <button type="submit" class="btn waves-effect waves-light" id="logcount-compute">Compute</button>
 
-        <form id="fileform">
-            <div>
-                <p>Step 1: Select image of log stack with attached barcodes.</p>
-                <input id="img-input" type="file" name="log-image" />
+                </form>
             </div>
-            <p class="error hidden" id="img-input-error">Please select an image</p>
-            <p class="error hidden" id="img-server-error"></p>
-            <div>
-                <p>Step 2: Select csv file of number of logs and short-end diameters.</p>
-                <input id="csv-input" type="file" name="log-count-csv-file" />
+            <div class="col s6">
+                <span>
+                    <p>Computer result: </p>
+                    <p id="compare-result"></p>
+                </span>
+                <div id="user-img"></div>
+                <div id="comp-img"></div>
+                <div id="id01"></div>
+                <p>Matched barcodes:</p>
+                <div id="match-table"></div>
+                <p>Unmatch barcodes:</p>
+
+                <div id="unmatch-table"></div>
+                <div id="accuracy-container">
+                    <p>Accuracy: </p>
+                    <p id="accuracy"></p>
+                </div>
+                <div id="standard-error-container">
+                    <p>Mean Standard Error:</p>
+                    <p id="standard-error"></p>
+
+                </div>
             </div>
-            <p class="error hidden" id="csv-input-error">Please select a csv file</p>
-            <button type="submit" class="compute" id="logcount-compute">Compute</button>
-
-        </form>
-
-
-        <span>
-            <p>Computer result: </p>
-            <p id="compare-result"></p>
-        </span>
-        <div id="user-img"></div>
-        <div id="comp-img"></div>
-        <div id="id01"></div>
-        <p>Matched barcodes:</p>
-        <div id="match-table"></div>
-        <p>Unmatch barcodes:</p>
-
-        <div id="unmatch-table"></div>
-        <div id="accuracy-container">
-            <p>Accuracy: </p>
-            <p id="accuracy"></p>
         </div>
-        <div id="standard-error-container">
-            <p>Mean Standard Error:</p>
-            <p id="standard-error"></p>
-
+        <div class="row">
+            <div class="col s6">
+                <img src="" alt="" id="original-image" class="col s12">
+            </div>
+            <div class="col s6">
+                <img src="" alt="" id="server-image" class="col s12">
+            </div>
         </div>
 
-        {{>footer}}
 
-        <script src="/js/helpers.js"></script>
-        <script src="/js/client.js"></script>
+
+
+
+    </div>
+    {{>footer}}
+
+
 </body>
-
-</head>
-
-</html>
+<script src="/js/helpers.js"></script>
+<script src="/js/client.js"></script>
+<script src="/js/upload-csv.js"></script>

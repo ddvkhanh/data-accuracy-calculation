@@ -1,45 +1,75 @@
-<!-- served as default, will eventually show up at the root of website -->
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Volume calculation</title>
-    <link rel="icon" href="/img/logs.png">
-    <link rel="stylesheet" href="/css/styles.css">
+{{>head}}
 
 <body>
+    {{>header}}
     <div class="main-content">
-        {{>header}}
+
         <p class="instruction">Use this site to calculate volume of log stack by JAS formula.</p>
         <form id="fileform-vol">
-            <div>
-                <p>Step 1: Select image of log stack with attached barcodes.</p>
-                <input id="img-vol-input" type="file" name="log-vol-image" />
-                <p class="error hidden" id="img-vol-input-error">Please select an image</p>
-                <p class="error hidden" id="img-vol-server-error"></p>
-            </div>
-            
-
-            <div class"text-input-container">
-                <label for="log-length">Step 2: Enter log length: </label>
-                <p><input type="number" id="log-length" placeholder="E.g: 5.5" required> m</p>
+            <div class="row">
+                <label for="img-vol-input">Step 1: Select image of log stack with attached barcodes.</p>
+                    <input id="img-vol-input" required accept="image/png, image/jpeg" type="file"
+                        name="log-vol-image" />
+                    <p class="error hidden" id="img-vol-input-error">Please select an image</p>
+                    <p class="error hidden" id="img-vol-server-error"></p>
             </div>
 
-            <div class"text-input-container">
-                <label for="jas-actual">Step 3: Enter JAS actual result: </label>
-                <p><input type="number" id="jas-actual" placeholder="" required> m3</p>
-            </div>
 
-            <button class="compute">Compute</button>
+
+
+            <button class="btn waves-effect waves-light" type="submit">Submit</button>
         </form>
+        <div class= "text-input-container hidden" id="step2">
+            <label for="log-length">Step 2: Enter log length: </label>
+            <div class="row">
+                <div class="col s11">
+                    <input type="number" onkeyup="onLogLengthChange(this.value)" id="log-length" placeholder="E.g: 5.5"
+                        required>
+                </div>
+                <div class="col s1">
+                    <b>m</b>
+                </div>
+            </div>
+
+        </div>
+        <div class="container">
+            <div id="computed-table"></div>
+            <br>
+            <h5 id="computed-total-volume" class="hidden">
+                <b>Total Volume:</b> <span id="computed-total-volume-number"></span> <strong>m<sup>3</sup></strong>
+            </h5>
+        </div>
+
         <p id="message-1"></p>
         <p id="message-2"></p>
     </div>
-    {{>footer}}
-    <script src="/js/volume.js"></script>
+    <div class="row hidden" id="step3">
+        <div class="col s12">
+            <p class="instruction">Compare Enter JAS actual result: </p>
+            <form id="fileform-vol">
+                <div class"text-input-container">
+                    <label for="jas-actual"></label>
+                    <div class="row">
+                        <div class="col s11">
+                            <input type="number" id="jas-actual" placeholder="" required> </p>
+                        </div>
+                        <div class="col s1">
+                            <b>m<sup>3</sup></b>
+                        </div>
 
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    {{>footer}}
 </body>
 
-</head>
+<script>
+    var referenceData = {{{ convert referenceData }}}
 
-</html>
+</script>
+
+
+<script src="/js/volume.js"></script>
