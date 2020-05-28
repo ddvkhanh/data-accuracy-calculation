@@ -2,6 +2,12 @@
     font-size: 0.75em;
 }
 
+#total-logs {
+    display:block;
+    text-align: center;
+    margin: auto;
+}
+
 body {
     color: #333333;
     display: flex;

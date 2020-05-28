@@ -69,16 +69,22 @@ function computeStatsFromRefAndParsedData(refDataAsDictionary, parsedData) {
     const measurement = { BarCode, ShortendDiameter };
     if (refDataAsDictionary[BarCode]) {
       const matchedMeasurement = {
-        ...measurement,
-        ReferenceShortendDiameter: refDataAsDictionary[BarCode],
+        "Log number": BarCode,
+        "Actual SED": ShortendDiameter,
+        "Computed SED": refDataAsDictionary[BarCode],
       };
+
       matches.push(matchedMeasurement);
       matchCount++;
       //calculate standard deviation
       const diff = refDataAsDictionary[BarCode] - ShortendDiameter;
       arrayStd.push(Math.pow(diff, 2));
     } else {
-      unmatches.push(measurement);
+      const unmatchedMeasurement = {
+        Barcode: BarCode,
+        "Actual SED": ShortendDiameter,
+      };
+      unmatches.push(unmatchedMeasurement);
     }
   });
   return {
@@ -123,41 +129,34 @@ async function onFormSubmit(e) {
 
     //Find standard error to determine calculation accuracy (original data set vs computer generated)
     const standardError = Math.sqrt(arrSum(arrayStd) / (matches.length - 2));
+    const roundedStandardError = roundToDecimal(standardError, 4);
+
+    document.getElementById("total-logs").innerHTML = `Total logs: ${
+      matches.length + unmatches.length
+    }`;
+    document.getElementById(
+      "matched-barcodes"
+    ).innerHTML = `Matched logs: ${matches.length}`;
     generateDynamicTable(matches, "match-table");
+    document.getElementById(
+      "unmatched-barcodes"
+    ).innerHTML = `Unmatched logs: ${unmatches.length}`;
     generateDynamicTable(unmatches, "unmatch-table");
 
     document.getElementById("accuracy").innerHTML = `${
       (matches.length / (matches.length + unmatches.length)) * 100
     }%`;
-    document.getElementById("standard-error").innerHTML = standardError;
+    document.getElementById("standard-error").innerHTML = roundedStandardError;
   };
   img_server_error.classList.add("hidden");
   const response = await uploadImage();
   const refData = response.data;
-  document.getElementById("server-image").src = response.processedImageUrl
+  document.getElementById("server-image").src = response.processedImageUrl;
 
   csvFileReader.readAsText(csvFile);
 }
 
 fileform.addEventListener("submit", onFormSubmit);
-
-//@event handler:   Compute button
-//@input:           click
-//@output:          comparison table, BarCode matching rate, Mean standard error
-/*const computeButton = document.getElementById("logcount-compute");
-computeButton.addEventListener("click", async function (e) {
-  console.log("Getting data from server");
-  const refDataUrl = "/reference-records";
-  const response = await fetch(refDataUrl);
-  const refData = await response.json();
-  const refDataAsDictionary = {};
-  refData.forEach((element) => {
-    refDataAsDictionary[element.BarCode] = element.ShortendDiameter;
-  });
-
-  
-
-});*/
 
 //@function:         Generate dynamic table
 //@input:            array of json object

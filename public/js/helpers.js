@@ -87,7 +87,7 @@ function generateDynamicTable(logData, location) {
         }
       }
     }
-    console.log(col);
+
 
     //create table head
     var tHead = document.createElement("thead");
@@ -134,4 +134,14 @@ function showImage(src, target) {
     // fill fr with image data
     fr.readAsDataURL(src.files[0]);
   });
+}
+
+function roundToDecimal(number, decimalPoint) {
+  if (isNaN(decimalPoint) || isNaN(number) || !Number.isInteger(decimalPoint)) {
+    console.log(Number.isInteger(decimalPoint), isNaN(number));
+    return NaN;
+  }
+
+  const factor = Math.pow(10, decimalPoint);
+  return Math.round(number * factor) / factor;
 }

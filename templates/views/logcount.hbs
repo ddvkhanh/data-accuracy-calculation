@@ -28,11 +28,11 @@
             <div class="col s6" id="">
 
                 <div id="accuracy-container">
-                    <h5><b>Accuracy:</b> <span id="accuracy"></span> </h5>
+                    <h5><b>Barcode Matching Rate:</b> <span id="accuracy"></span> </h5>
 
                 </div>
                 <div id="standard-error-container">
-                    <h5><b class="">Mean Standard Error:</b> <span id="standard-error"></span></h5>
+                    <h5><b class="">SED Mean Standard Error:</b> <span id="standard-error"></span></h5>
 
 
                 </div>
@@ -47,30 +47,18 @@
             </div>
         </div>
         <div class="row">
-
-
+        <h3 id="total-logs"></h3>
             <div class="col s6">
-                <h3>Matched barcodes:</h3>
+                <h3 id="matched-barcodes"></h3>
                 <div id="match-table"></div>
             </div>
             <div class="col s6">
-                <h3>Unmatched barcodes:</h3>
+                <h3 id="unmatched-barcodes"></h3>
                 <div id="unmatch-table"></div>
             </div>
-
-
-
         </div>
-
-
-
-
-
     </div>
     {{>footer}}
-
-
 </body>
 <script src="/js/helpers.js"></script>
 <script src="/js/client.js"></script>
-<script src="/js/upload-csv.js"></script>
