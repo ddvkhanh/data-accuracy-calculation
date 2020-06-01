@@ -7,7 +7,7 @@ const upload = require("./utils/upload");
 const helpers = require("./utils/helpers");
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 80;
 
 //Define paths for Express config
 const publicDirectory = path.join(__dirname, "../public");
