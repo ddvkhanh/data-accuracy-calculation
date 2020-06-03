@@ -1,11 +1,18 @@
+//Last updated: 3/6/2020
+//Purpose: This file contains supporting functions to facilitate client-side
+//The functions in this file are used in logcount.js and volume.js
+
+//@function:    Calculate sum of array
+//@parameter:   Array
 function arrSum(arr) {
   return arr.reduce((a, b) => a + b, 0);
 }
+
+//@function:    Transform CSV content to array
 function CSVToArray(strData, strDelimiter) {
   // Check to see if the delimiter is defined. If not,
   // then default to comma.
   strDelimiter = strDelimiter || ",";
-
   // Create a regular expression to parse the CSV values.
   var objPattern = new RegExp(
     // Delimiters.
@@ -20,21 +27,17 @@ function CSVToArray(strData, strDelimiter) {
       "\\r\\n]*))",
     "gi"
   );
-
   // Create an array to hold our data. Give the array
   // a default empty first row.
   var arrData = [[]];
-
   // Create an array to hold our individual pattern
   // matching groups.
   var arrMatches = null;
-
   // Keep looping over the regular expression matches
   // until we can no longer find a match.
   while ((arrMatches = objPattern.exec(strData))) {
     // Get the delimiter that was found.
     var strMatchedDelimiter = arrMatches[1];
-
     // Check to see if the given delimiter has a length
     // (is not the start of string) and if it matches
     // field delimiter. If id does not, then we know
@@ -44,9 +47,7 @@ function CSVToArray(strData, strDelimiter) {
       // add an empty row to our data array.
       arrData.push([]);
     }
-
     var strMatchedValue;
-
     // Now that we have our delimiter out of the way,
     // let's check to see which kind of value we
     // captured (quoted or unquoted).
@@ -67,6 +68,10 @@ function CSVToArray(strData, strDelimiter) {
   // Return the parsed data.
   return arrData;
 }
+
+//@function:         Generate dynamic table
+//@input:            array of json object
+//@output:           table on web
 function generateDynamicTable(logData, location) {
   var noOfLogs = logData.length;
   console.log(noOfLogs);
@@ -87,14 +92,10 @@ function generateDynamicTable(logData, location) {
         }
       }
     }
-
-
     //create table head
     var tHead = document.createElement("thead");
-
     //create row for table head
     var hRow = document.createElement("tr");
-
     //add column header to row of table head
     for (var i = 0; i < col.length; i++) {
       var th = document.createElement("th");
@@ -105,7 +106,6 @@ function generateDynamicTable(logData, location) {
     table.appendChild(tHead);
     //create table bodu
     var tBody = document.createElement("tbody");
-
     //add column header to row of table head
     for (var i = 0; i < noOfLogs; i++) {
       var bRow = document.createElement("tr");
@@ -124,6 +124,8 @@ function generateDynamicTable(logData, location) {
   }
 }
 
+//@function:    Show image that user just uploaded
+//@parameter:   src of image, target
 function showImage(src, target) {
   var fr = new FileReader();
   // when image is loaded, set the src of the image where you want to display it
@@ -136,6 +138,8 @@ function showImage(src, target) {
   });
 }
 
+//@function:    Round up number of decimal
+//@parameter:   number (the number want to round), decimalPoint(number of decimal want to round)
 function roundToDecimal(number, decimalPoint) {
   if (isNaN(decimalPoint) || isNaN(number) || !Number.isInteger(decimalPoint)) {
     console.log(Number.isInteger(decimalPoint), isNaN(number));

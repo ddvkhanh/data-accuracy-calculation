@@ -1,3 +1,7 @@
+//Last update: 3/6/2020
+//Purpose: Client-side of volume page; Allow user to input image, after submit and accepted, 
+//the system will allow user to enter log length, actual JAS result to compare accuracy
+
 console.log("Client-side code running");
 
 const imgInput = document.getElementById("img-vol-input");
@@ -7,6 +11,8 @@ const img_server_error = document.getElementById("img-vol-server-error");
 const logLength = document.getElementById("log-length").value;
 const centimeterCubeToMeterCubeDivisor = 10000;
 const errorMargin = 0.0000001;
+
+//@function:    Upload Image
 async function uploadImage() {
   try {
     if (imgInput.files.length == 0) return;
@@ -33,6 +39,8 @@ async function uploadImage() {
   }
 }
 
+
+//@function: validate if Image file is present/acceptable
 function validateInputs() {
   let result = true;
   img_input_error.classList.add("hidden");
@@ -43,6 +51,8 @@ function validateInputs() {
   return result;
 }
 
+//@Event handler:   When user enter log length
+//@Outpput:         Table of computer-generated SED data
 function onLogLengthChange(newLengthValue) {
   const localReferenceData = referenceData;
   var computedData = referenceData.map(({ BarCode, ShortendDiameter }) => {
@@ -55,11 +65,11 @@ function onLogLengthChange(newLengthValue) {
     };
   });
 
+  //Calculate total volume based on individual log volume
   const totalVolume = computedData.reduce(
     (acc, curr) => acc + curr["volume"],
     0
   );
-
   const roundedToTalVolume = roundToDecimal(totalVolume, 4);
   document.getElementById("computed-total-volume").classList.remove("hidden");
   document.getElementById(
@@ -72,6 +82,8 @@ function onLogLengthChange(newLengthValue) {
   console.log("compute result 1+++: ", roundedToTalVolume);
 }
 
+//@Event handler:       When user enter actual JAS result
+//@Output:              Difference rate (%) betweeen actual and computer-generated result
 function onJASActualChange() {
   const computedResultText = document.getElementById("computed-total-volume-number").innerHTML;
   const computedResult = parseFloat(computedResultText)
@@ -83,9 +95,10 @@ function onJASActualChange() {
   document.getElementById("jas-diff").innerHTML = `${roundToDecimal(jasDiff,4)}%`;
 }
 
+//@Event handler:        When form is submitted
 async function onFormSubmit(e) {
   e.preventDefault();
-  // if validation for 2 files fail display error message and then
+  // if validation for files fail display error message and then
   // stop calculation
 
   if (!validateInputs()) return;
@@ -115,6 +128,9 @@ async function onFormSubmit(e) {
 
 fileformVol.addEventListener("submit", onFormSubmit);
 
+//@Round down Diameter
+//Logs with less than 14 cm of diameter – the result will be rounded down.
+//Logs with more than 14 cm of diameter – the result will be rounded down to the nearest even integer.
 const preprocessDiameter = (diameterInCm) => {
   const roundedDownDiameter = Math.floor(diameterInCm);
   if (diameterInCm <= 14) return roundedDownDiameter;
@@ -124,6 +140,7 @@ const preprocessDiameter = (diameterInCm) => {
   else return roundedDownDiameter - 1;
 };
 
+//@Test formula
 // const testPreprocessDiameter = () => {
 //   const testDiameters = [
 //     {
@@ -155,6 +172,7 @@ const preprocessDiameter = (diameterInCm) => {
 //   });
 // };
 
+//@function:      Calculate volume of logs with length less than 6m
 const volumeWhenLogLengthLessThan6M = (diameterInCm, length) => {
   const preprocessedDiameter = preprocessDiameter(diameterInCm);
   const result =
@@ -188,6 +206,8 @@ const volumeWhenLogLengthLessThan6M = (diameterInCm, length) => {
 //testPreprocessDiameter();
 //testVolumeWhenLogLengthLessThan6M();
 
+
+//@function:      Calculate volume of logs with length >= 6m
 const volumeWhenLogLengthMoreThan6M = (diameterInCm, length) => {
   const preprocessedDiameter = preprocessDiameter(diameterInCm);
   const roundedDownLength = Math.floor(length);

@@ -1,6 +1,8 @@
-console.log("Client-side code running");
+//Last update: 3/6/2020
+//Purpose: Client-side of logcount page; Allow user to upload image and csv files, hit submit, then proceed data accuracy comparison
 
-///@function: This function is for uploading CSV file
+
+console.log("Client-side code running");
 
 //@event handler: Upload CSV button
 //@input:         user file
@@ -28,6 +30,9 @@ function validateInputs() {
   return result;
 }
 
+
+//@function:  This function is for uploading Image file
+
 async function uploadImage() {
   try {
     if (imgInput.files.length == 0) return;
@@ -54,14 +59,13 @@ async function uploadImage() {
   }
 }
 
-function computeStatsFromRefAndParsedData(refDataAsDictionary, parsedData) {
-  //Find matching keys (BarCode), for every matched BarCode, calculate standard deviation
+//@function:  Find matching keys (BarCode), for every matched BarCode, calculate standard deviation
 
+function computeStatsFromRefAndParsedData(refDataAsDictionary, parsedData) {
   const matches = [];
   const unmatches = [];
   const arrayStd = [];
   let matchCount = 0;
-  //@function arrSum: calculate sum of array (for standard deviation calculation)
 
   Object.keys(parsedData).forEach((key) => {
     const BarCode = key;
@@ -94,6 +98,7 @@ function computeStatsFromRefAndParsedData(refDataAsDictionary, parsedData) {
   };
 }
 
+//@Event handler: Submit button
 async function onFormSubmit(e) {
   e.preventDefault();
   // if validation for 2 files fail display error message and then
@@ -113,18 +118,18 @@ async function onFormSubmit(e) {
     }
 
     // assume ref data is available here after upload Image success
-    console.log("Ref data form server", refData);
+    // console.log("Ref data form server", refData);
     if (refData.error) {
       img_server_error.classList.remove("hidden");
       img_server_error.innerHTML = refData.error;
       return;
     }
-    console.log("parsed data", parsedData);
+    // console.log("parsed data", parsedData);
     const computedResult = computeStatsFromRefAndParsedData(
       refData,
       parsedData
     );
-    console.log("computed result", computedResult);
+    // console.log("computed result", computedResult);
     const { matches, unmatches, arrayStd } = computedResult;
 
     //Find standard error to determine calculation accuracy (original data set vs computer generated)
@@ -158,9 +163,7 @@ async function onFormSubmit(e) {
 
 fileform.addEventListener("submit", onFormSubmit);
 
-//@function:         Generate dynamic table
-//@input:            array of json object
-//@output:           table on web
+
 var src = document.getElementById("img-input");
 var target = document.getElementById("original-image");
 showImage(src, target);

@@ -1,9 +1,16 @@
+//Last update: 3/6/2020
+//This file contains other supporting back-end functions and hard-coded SED computer generated data
+//Functions in this file are called in app.js
+
+
 const fs = require("fs");
 const isEqual = require('lodash.isequal');
 const userURL="public/logs.json"
 const compURL="public/computerLogCount.json"
 
 
+//Hard-coded to demo the computer-generated BarCode and SED detection from uploaded Image
+//This would be replaced by the result of machine-learning algorithms result
 const staticRecords = [
   { BarCode: "021860", ShortendDiameter: 60 },
   { BarCode: "021858", ShortendDiameter: 60 },
@@ -22,7 +29,6 @@ staticRecords.forEach((element) => {
 });
 
 //Create computer-generated CSV file
-// this is hard-coded for now
 calculateLogCount = () => {
   let logData = JSON.stringify(staticRecords, null, 2);
   fs.writeFileSync("computerLogCount.json", logData);

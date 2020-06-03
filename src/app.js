@@ -102,7 +102,7 @@ app.post(
         return console.log("error reading file");
       }
     });
-    // TODO: replace this with actual result from python
+    // TODO: replace this with actual result from python machine learning
     res.send(helpers.staticRecords);
   },
   (error, req, res, next) => {
@@ -123,10 +123,10 @@ app.post(
       if (error) {
         return console.log("error reading file");
       }
-      neatCsv(data).then((parsedData) => {
-        const dataJSON = JSON.stringify(parsedData, null, 2); //write a response to the client
-        fs.writeFileSync("logs.json", dataJSON);
-      });
+      // neatCsv(data).then((parsedData) => {
+      //   const dataJSON = JSON.stringify(parsedData, null, 2); //write a response to the client
+      //   fs.writeFileSync("logs.json", dataJSON);
+      // });
     });
     res.send();
   },
