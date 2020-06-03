@@ -9,14 +9,14 @@
                 <form id="fileform">
                     <div>
                         <p>Step 1: Select image of log stack with attached barcodes.</p>
-                        <input id="img-input" type="file" name="log-image" />
+                        <input id="img-input" type="file" name="log-image" accept=".jpg, .JPG, .jpeg, .JPEG, .png, .PNG" required/>
                     </div>
                     <p class="error hidden" id="img-input-error">Please select an image</p>
                     <p class="error hidden" id="img-server-error"></p>
 
                     <div>
                         <p>Step 2: Select csv file of number of logs and short-end diameters.</p>
-                        <input id="csv-input" type="file" name="log-count-csv-file" />
+                        <input id="csv-input" type="file" name="log-count-csv-file" accept=".csv" required/>
                     </div>
                     <p class="error hidden" id="csv-input-error">Please select a csv file</p>
                     <br>
